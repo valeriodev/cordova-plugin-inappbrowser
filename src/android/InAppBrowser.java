@@ -1422,7 +1422,7 @@ public class InAppBrowser extends CordovaPlugin {
                 newloc = url;
             }
 
-            LOG.i(LOG_TAG, "On page Started new_url : " + newloc);
+            LOG.i(LOG_TAG, "On page Started new_url ANDreAAAAAX : " + newloc);
 
             // Update the UI if we haven't already
             if (!newloc.equals(edittext.getText().toString())) {
