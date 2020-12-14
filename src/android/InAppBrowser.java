@@ -1259,7 +1259,7 @@ public class InAppBrowser extends CordovaPlugin {
                 }
             }
 
-            if (url.startsWith(WebView.SCHEME_TEL)) {
+            if (url.startsWith(WebView.SCHEME_TEL) || url.startsWith("tel:")) {
                 try {
                     Intent intent = new Intent(Intent.ACTION_DIAL);
                     intent.setData(Uri.parse(url));
