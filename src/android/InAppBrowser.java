@@ -180,8 +180,13 @@ public class InAppBrowser extends CordovaPlugin {
                 public void run() {
                     String result = "";
                     // SELF
+
+                    LOG.i(LOG_TAG, "ValerioRun");
+
                     if (SELF.equals(target)) {
                         LOG.d(LOG_TAG, "in self");
+                        LOG.i(LOG_TAG, "ValerioRun in Self");
+
                         /* This code exists for compatibility between 3.x and 4.x versions of Cordova.
                          * Previously the Config class had a static method, isUrlWhitelisted(). That
                          * responsibility has been moved to the plugins, with an aggregating method in
@@ -242,13 +247,40 @@ public class InAppBrowser extends CordovaPlugin {
                     }
                     // SYSTEM
                     else if (SYSTEM.equals(target)) {
+                        LOG.i(LOG_TAG, "ValerioRun in system");
                         LOG.d(LOG_TAG, "in system");
                         result = openExternal(url);
                     }
                     // BLANK - or anything else
                     else {
+                        LOG.i(LOG_TAG, "ValerioRun blank");
                         LOG.d(LOG_TAG, "in blank");
-                        result = showWebPage(url, features);
+                        if (url.startsWith(WebView.SCHEME_TEL))
+                        {
+                            try {
+                                LOG.d(LOG_TAG, "loading in dialer");
+                                Intent intent = new Intent(Intent.ACTION_DIAL);
+                                intent.setData(Uri.parse(url));
+                                cordova.getActivity().startActivity(intent);
+                            } catch (android.content.ActivityNotFoundException e) {
+                                LOG.e(LOG_TAG, "Error dialing " + url + ": " + e.toString());
+                            }
+                        }
+                        else if (url.startsWith("geo:") || url.startsWith(WebView.SCHEME_MAILTO) || url.startsWith("market:") || url.startsWith("intent:") || url.startsWith("whatsapp:")) {
+                                LOG.i(LOG_TAG, "It's a intent or whatsapp");
+                                try {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    intent.setData(Uri.parse(url));
+                                    cordova.getActivity().startActivity(intent);
+                                    override = true;
+                                } catch (android.content.ActivityNotFoundException e) {
+                                    LOG.e(LOG_TAG, "Error with " + url + ": " + e.toString());
+                                }
+                            }
+                        else{
+                            result = showWebPage(url, features);
+                        }
+                        
                     }
 
                     PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, result);
