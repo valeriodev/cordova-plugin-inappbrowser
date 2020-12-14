@@ -1224,6 +1224,8 @@ public class InAppBrowser extends CordovaPlugin {
             boolean useBeforeload = false;
             String errorMessage = null;
 
+            LOG.i(LOG_TAG, "Load for " + url);
+
             if (beforeload.equals("yes") && method == null) {
                 useBeforeload = true;
             } else if(beforeload.equals("yes")
@@ -1259,7 +1261,12 @@ public class InAppBrowser extends CordovaPlugin {
                 }
             }
 
+            LOG.i(LOG_TAG, "Start check startW for " + url);
+
             if (url.startsWith(WebView.SCHEME_TEL) || url.startsWith("tel:")) {
+
+                LOG.i(LOG_TAG, "It's a phone");
+
                 try {
                     Intent intent = new Intent(Intent.ACTION_DIAL);
                     intent.setData(Uri.parse(url));
@@ -1269,6 +1276,7 @@ public class InAppBrowser extends CordovaPlugin {
                     LOG.e(LOG_TAG, "Error dialing " + url + ": " + e.toString());
                 }
             } else if (url.startsWith("geo:") || url.startsWith(WebView.SCHEME_MAILTO) || url.startsWith("market:") || url.startsWith("intent:") || url.startsWith("whatsapp:")) {
+                LOG.i(LOG_TAG, "It's a intent or whatsapp");
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
@@ -1398,6 +1406,10 @@ public class InAppBrowser extends CordovaPlugin {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
             String newloc = "";
+
+
+            LOG.i(LOG_TAG, "On page Started url : " + url);
+
             if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("file:")) {
                 newloc = url;
             }
@@ -1408,6 +1420,8 @@ public class InAppBrowser extends CordovaPlugin {
                 LOG.e(LOG_TAG, "Possible Uncaught/Unknown URI");
                 newloc = "http://" + url;
             }
+
+            LOG.i(LOG_TAG, "On page Started new_url : " + newloc);
 
             // Update the UI if we haven't already
             if (!newloc.equals(edittext.getText().toString())) {
