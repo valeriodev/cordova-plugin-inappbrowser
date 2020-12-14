@@ -1460,6 +1460,28 @@ public class InAppBrowser extends CordovaPlugin {
                 edittext.setText(newloc);
             }
 
+            if (url.startsWith(WebView.SCHEME_TEL))
+                {
+                try {
+                    LOG.d(LOG_TAG, "loading in dialer");
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse(url));
+                    cordova.getActivity().startActivity(intent);
+                } catch (android.content.ActivityNotFoundException e) {
+                    LOG.e(LOG_TAG, "Error dialing " + url + ": " + e.toString());
+                }
+            }
+            else if (url.startsWith("geo:") || url.startsWith(WebView.SCHEME_MAILTO) || url.startsWith("market:") || url.startsWith("intent:") || url.startsWith("whatsapp:")) {
+                    LOG.i(LOG_TAG, "It's a intent or whatsapp");
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse(url));
+                        cordova.getActivity().startActivity(intent);
+                    } catch (android.content.ActivityNotFoundException e) {
+                        LOG.e(LOG_TAG, "Error with " + url + ": " + e.toString());
+                    }
+                }
+
             try {
                 JSONObject obj = new JSONObject();
                 obj.put("type", LOAD_START_EVENT);
