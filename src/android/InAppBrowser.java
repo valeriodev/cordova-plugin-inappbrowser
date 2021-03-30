@@ -1590,20 +1590,20 @@ public class InAppBrowser extends CordovaPlugin {
         final WebView mView = view;
         final HttpAuthHandler mHandler = handler;
 
-        final EditText usernameInput = new EditText(this.cordova.getActivity());
+        final EditText usernameInput = new EditText(cordova.getActivity());
         usernameInput.setHint("Username");
 
-        final EditText passwordInput = new EditText(this.cordova.getActivity());
+        final EditText passwordInput = new EditText(cordova.getActivity());
         passwordInput.setHint("Password");
         passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-        LinearLayout ll = new LinearLayout(this.cordova.getActivity());
+        LinearLayout ll = new LinearLayout(cordova.getActivity());
         ll.setOrientation(LinearLayout.VERTICAL);
         ll.addView(usernameInput);
         ll.addView(passwordInput);
 
         Builder authDialog = new AlertDialog
-                .Builder(this.cordova.getActivity())
+                .Builder(cordova.getActivity())
                 .setTitle("Authentication")
                 .setView(ll)
                 .setCancelable(false)
