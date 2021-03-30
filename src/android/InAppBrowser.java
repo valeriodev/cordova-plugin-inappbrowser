@@ -65,7 +65,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-//import android.app.AlertDialog.Builder;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 
