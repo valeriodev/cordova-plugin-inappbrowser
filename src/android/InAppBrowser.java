@@ -1584,54 +1584,54 @@ public class InAppBrowser extends CordovaPlugin {
         }
 
 
-    @Override
-    public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+        @Override
+        public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
 
-        LOG.d(LOG_TAG, "New onReceivedHttpAuthRequest");
+            LOG.d(LOG_TAG, "New onReceivedHttpAuthRequest");
 
-        final WebView mView = view;
-        final HttpAuthHandler mHandler = handler;
+            final WebView mView = view;
+            final HttpAuthHandler mHandler = handler;
 
-        final EditText usernameInput = new EditText(cordova.getActivity());
-        usernameInput.setHint("Username");
+            final EditText usernameInput = new EditText(cordova.getActivity());
+            usernameInput.setHint("Username");
 
-        final EditText passwordInput = new EditText(cordova.getActivity());
-        passwordInput.setHint("Password");
-        passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            final EditText passwordInput = new EditText(cordova.getActivity());
+            passwordInput.setHint("Password");
+            passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-        LinearLayout ll = new LinearLayout(cordova.getActivity());
-        ll.setOrientation(LinearLayout.VERTICAL);
-        ll.addView(usernameInput);
-        ll.addView(passwordInput);
+            LinearLayout ll = new LinearLayout(cordova.getActivity());
+            ll.setOrientation(LinearLayout.VERTICAL);
+            ll.addView(usernameInput);
+            ll.addView(passwordInput);
 
-        Builder authDialog = new AlertDialog
-                .Builder(cordova.getActivity())
-                .setTitle("Authentication")
-                .setView(ll)
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        mHandler.proceed(usernameInput.getText().toString(), passwordInput.getText().toString());
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.dismiss();
-                        mView.stopLoading();
-                        onLoadListener.onAuthCancel((MyWebView)mView, mTitleTextView);
-                    }
-                });
+            AlertDialog.Builder authDialog = new AlertDialog
+                    .Builder(cordova.getActivity())
+                    .setTitle("Authentication")
+                    .setView(ll)
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            mHandler.proceed(usernameInput.getText().toString(), passwordInput.getText().toString());
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.dismiss();
+                            mView.stopLoading();
+                            //onLoadListener.onAuthCancel((MyWebView)mView, mTitleTextView);
+                        }
+                    });
 
-        if(view!=null)
-            authDialog.show();
+            if(view!=null)
+                authDialog.show();
 
-    }
+        }
 
 
         /**
          * On received http auth request.
-         */
+         
         @Override
         public void onReceivedHttpAuthRequestOriginal(WebView view, HttpAuthHandler handler, String host, String realm) {
 
@@ -1666,5 +1666,8 @@ public class InAppBrowser extends CordovaPlugin {
             // By default handle 401 like we'd normally do!
             super.onReceivedHttpAuthRequest(view, handler, host, realm);
         }
+
+        */
+
     }
 }
