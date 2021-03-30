@@ -1578,11 +1578,54 @@ public class InAppBrowser extends CordovaPlugin {
             handler.cancel();
         }
 
+
+    @Override
+    public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+        final WebView mView = view;
+        final HttpAuthHandler mHandler = handler;
+
+        final EditText usernameInput = new EditText(mActivity);
+        usernameInput.setHint("Username");
+
+        final EditText passwordInput = new EditText(mActivity);
+        passwordInput.setHint("Password");
+        passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+        LinearLayout ll = new LinearLayout(mActivity);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.addView(usernameInput);
+        ll.addView(passwordInput);
+
+        Builder authDialog = new AlertDialog
+                .Builder(mActivity)
+                .setTitle("Authentication")
+                .setView(ll)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        mHandler.proceed(usernameInput.getText().toString(), passwordInput.getText().toString());
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                        mView.stopLoading();
+                        onLoadListener.onAuthCancel((MyWebView)mView, mTitleTextView);
+                    }
+                });
+
+        if(view!=null)
+            authDialog.show();
+
+    }
+
+
         /**
          * On received http auth request.
          */
         @Override
-        public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+        public void onReceivedHttpAuthRequestOriginal(WebView view, HttpAuthHandler handler, String host, String realm) {
 
             // Check if there is some plugin which can resolve this auth challenge
             PluginManager pluginManager = null;
