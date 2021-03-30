@@ -1581,6 +1581,9 @@ public class InAppBrowser extends CordovaPlugin {
 
     @Override
     public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+
+        LOG.d(LOG_TAG, "New onReceivedHttpAuthRequest");
+
         final WebView mView = view;
         final HttpAuthHandler mHandler = handler;
 
