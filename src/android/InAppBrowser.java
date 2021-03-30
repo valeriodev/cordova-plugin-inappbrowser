@@ -65,6 +65,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.app.AlertDialog.Builder;
+
+
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.Config;
@@ -1587,20 +1590,20 @@ public class InAppBrowser extends CordovaPlugin {
         final WebView mView = view;
         final HttpAuthHandler mHandler = handler;
 
-        final EditText usernameInput = new EditText(mActivity);
+        final EditText usernameInput = new EditText(this.cordova.getActivity());
         usernameInput.setHint("Username");
 
-        final EditText passwordInput = new EditText(mActivity);
+        final EditText passwordInput = new EditText(this.cordova.getActivity());
         passwordInput.setHint("Password");
         passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-        LinearLayout ll = new LinearLayout(mActivity);
+        LinearLayout ll = new LinearLayout(this.cordova.getActivity());
         ll.setOrientation(LinearLayout.VERTICAL);
         ll.addView(usernameInput);
         ll.addView(passwordInput);
 
         Builder authDialog = new AlertDialog
-                .Builder(mActivity)
+                .Builder(this.cordova.getActivity())
                 .setTitle("Authentication")
                 .setView(ll)
                 .setCancelable(false)
